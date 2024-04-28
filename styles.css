@@ -1,0 +1,48 @@
+main  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main > * {
+    border: 2px solid black;
+    margin: 2em;
+}
+
+#menu {
+    width: 40%;
+}
+
+#output_area {
+width: fit-content;
+padding: 2em;
+display: flex;
+justify-content: center;
+}
+
+#output {
+    padding-right: 2em;
+    font-size: xx-large;
+}
+
+#undo_button {
+    height: fit-content;
+    align-self: center;
+}
+
+#game_area {
+    display: flex;
+    width: 60%;
+}
+
+#level {
+    margin-left: auto;
+}
+
+#hint_box {
+    margin: auto;
+}
+
+#level_info {
+    width: 40%;
+}
