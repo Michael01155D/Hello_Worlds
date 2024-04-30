@@ -1,6 +1,7 @@
 body {
     background-color: rgb(61, 55, 55);
     color: white;
+    font-family: consolas, 'Times New Roman', Times, serif;
 }
 
 main  {
@@ -62,4 +63,5 @@ justify-content: center;
 #start_screen {
     white-space: pre;
     font-family: consolas, 'Times New Roman', Times, serif;
+    border: none;
 }
