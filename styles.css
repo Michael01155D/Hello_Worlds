@@ -26,10 +26,15 @@ h1 {
     width: 40%;
 }
 
+#instructions {
+    border: none;
+}
+
 #output_area {
-width: fit-content;
+width: 60%;
+flex: 3em;
 padding: 2em;
-display: flex;
+display: grid;
 justify-content: center;
 }
 
