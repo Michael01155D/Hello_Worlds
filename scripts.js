@@ -26,7 +26,19 @@ const startButtons = [easyButton, mediumButton, hardButton];
 startButtons.map(button => startScreen.appendChild(button));
 const difficulties = ["Easy", "Medium", "Hard"];
 //boolean flag to allow keyboard input
-let allowInput = false;
+let inputEnabled = false;
+
+const preventInput = () => {
+  inputEnabled = false;
+  undoButton.style.visibility = "hidden";
+}
+
+const allowInput = () => {
+  inputEnabled = true;
+  undoButton.style.visibility = "visible";
+}
+
+preventInput();
 
 //click handler for start buttons, switch to main view then fetch a world to start
 const startGame = (difficulty) => {
@@ -34,16 +46,54 @@ const startGame = (difficulty) => {
     //not yet implemented: currentWorld = fetchWorld(difficulty);
     startScreen.style.display = "none";
     mainLayout.map(component => component.style.visibility = "visible");
-    allowInput = true;
+    allowInput();
 }
+
+undoButton.addEventListener('click', (e) => {
+  if (allowInput){
+    output.textContent = output.textContent.slice(0, -1);
+  }
+})
+
 
 for (let i = 0; i < 3; i++) {
     startButtons[i].textContent = difficulties[i];
+    startButtons[i].id = startButtons[i].textContent.toLowerCase() + "_button";
     startButtons[i].addEventListener('click', () => startGame(difficulties[i]));
 }
 
 let worldsCleared = 0;
 let currentWorld = "this will be replaced by a world object";
+
+//once worlds are refactored into objects, each obj will have its own listener fnctn
+document.addEventListener("keydown", (e) => startingWorld(e))
+
+//refactor by passing world obj as arg
+const clearLevel = () => {
+  worldsCleared++
+  preventInput();
+  //refactor w/ world obj's event handler
+  document.removeEventListener("keydown", startingWorld);
+  setTimeout(() => {
+    output.textContent = "Level Cleared! ...On to the next";
+  }, 1000)
+}
+
+
+const startingWorld = (e) => {
+  if (!allowInput) {
+    return;
+  }
+  if (e.key === "Backspace"){
+    output.textContent = output.textContent.slice(0, -1);
+  } else if ("abcdefghijklmnopqrstuvwxyz0123456789 ".includes(e.key.toLowerCase()) && output.textContent.length < 20){
+    output.textContent += e.key;
+  }
+  if (output.textContent.trim() === "Hello World") {
+    clearLevel();
+  }
+}
+
 
 //to be refactored into final world object's .play() function
 const finalWorld = () => {
@@ -57,32 +107,4 @@ const finalWorld = () => {
   }
   console.log("Letters are:", letters);
   console.log("to earn are:", lettersToEarn);
-}
-
-//once worlds are refactored into objects, each obj will have its own listener fnctn
-document.addEventListener("keydown", (e) => startingWorld(e))
-
-const startingWorld = (e) => {
-  if (!allowInput) {
-    return;
-  }
-  if (e.key === "Backspace"){
-    output.textContent = output.textContent.slice(0, -1);
-  } else if ("abcdefghijklmnopqrstuvwxyz0123456789 ".includes(e.key.toLowerCase()) && output.textContent.length < 16){
-    output.textContent += e.key;
-  }
-  if (output.textContent.trim() === "Hello World") {
-    clearLevel();
-  }
-}
-
-//refactor by passing world obj as arg
-const clearLevel = () => {
-  worldsCleared++
-  allowInput = false;
-  //refactor w/ world obj's event handler
-  document.removeEventListener("keydown", startingWorld);
-  setTimeout(() => {
-    output.textContent = "Level Cleared! ...On to the next";
-  }, 2000)
 }

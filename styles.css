@@ -1,7 +1,11 @@
+:root {
+    --main-font: consolas, 'Times New Roman', Times, serif;
+}
+
 body {
     background-color: rgb(61, 55, 55);
     color: white;
-    font-family: consolas, 'Times New Roman', Times, serif;
+    font-family: var(--main-font);
 }
 
 main  {
@@ -13,12 +17,12 @@ main  {
 
 main > * {
     border: 2px solid white;
-    margin: 2em;
+    margin: 1.5em;
 }
 
 h1 {
     border: none;
-    font-family: consolas, 'Times New Roman', Times, serif;
+    font-family: var(--main-font);
     font-style: italic;
 }
 
@@ -31,21 +35,63 @@ h1 {
 }
 
 #output_area {
-width: 60%;
-flex: 3em;
+width: 40%;
+flex: 5em;
 padding: 2em;
-display: grid;
+display: flex;
+flex-wrap: wrap;
 justify-content: center;
 }
 
+
 #output {
-    padding-right: 2em;
-    font-size: xx-large;
+    font-size: 1.5rem;
+    flex-grow: 1;
+}
+
+button {
+    border: 1px solid rgb(253, 253, 253);
+    background: linear-gradient(150deg,  #555, #444);
+    color: white;
+    font-family: var(--main-font);
+    padding: 3%;
+    margin: 2%;
+    font-size: x-large;
+}
+
+#easy_button:hover {  
+    background: green;
+    transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+}
+
+#medium_button:hover {
+    background: rgb(100, 100, 2);
+    transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+}
+
+#hard_button:hover {
+    background: rgb(153, 4, 4);
+    transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
 }
 
 #undo_button {
     height: fit-content;
     align-self: center;
+    flex-grow: 0;
+    border: 3px solid rgb(253, 253, 253);
+    border-radius: 100%;
+    margin: 0;
+}
+
+#undo_button:hover {
+    font-weight: bolder;
+    box-shadow: none;
+    transition: .8s;
+}
+#undo_button:active {
+        border: 3px solid rgb(27, 0, 150);
+        transform: translateY(2px);
+        color: rgb(27, 0, 150);;
 }
 
 #game_area {
@@ -59,6 +105,9 @@ justify-content: center;
 
 #hint_box {
     margin: auto;
+    position: absolute;
+    bottom: 50%;
+    margin-left: 80%;
 }
 
 #level_info {
@@ -67,6 +116,6 @@ justify-content: center;
 
 #start_screen {
     white-space: pre;
-    font-family: consolas, 'Times New Roman', Times, serif;
+    font-family: var(--main-font);
     border: none;
 }
