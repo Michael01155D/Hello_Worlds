@@ -30,23 +30,47 @@ h1 {
     width: 40%;
 }
 
+#output_and_hint_container{
+    width: 60%;
+    flex: 5em;
+    padding: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: none;
+    align-items: stretch;
+}
+
 #instructions {
     border: none;
 }
 
 #output_area {
-width: 40%;
-flex: 5em;
-padding: 2em;
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
+    width: 100%;
+    flex: 5em;
+    padding: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 2px solid white;
 }
 
 
 #output {
     font-size: 1.5rem;
-    flex-grow: 1;
+    flex: 1;
+}
+
+#hint_box {
+    border: 2px solid white;
+    margin-left: 2em;
+    flex: 0.5;
+}
+
+@media screen and (max-width: 500px) {
+    #hint_box {
+        margin-top: 2em;
+    }
 }
 
 button {
@@ -103,12 +127,6 @@ button {
     margin-left: auto;
 }
 
-#hint_box {
-    margin: auto;
-    position: absolute;
-    bottom: 50%;
-    margin-left: 80%;
-}
 
 #level_info {
     width: 40%;
@@ -118,4 +136,5 @@ button {
     white-space: pre;
     font-family: var(--main-font);
     border: none;
+    font-size: larger;
 }

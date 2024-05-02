@@ -76,7 +76,7 @@ const clearLevel = () => {
   document.removeEventListener("keydown", startingWorld);
   setTimeout(() => {
     output.textContent = "Level Cleared! ...On to the next";
-  }, 1000)
+  }, 500)
 }
 
 
@@ -94,8 +94,7 @@ const startingWorld = (e) => {
   }
 }
 
-
-//to be refactored into final world object's .play() function
+//to be refactored into final world object
 const finalWorld = () => {
   let letters = ["H", "e", "l", "l", "o", "W", "o", "r", "l", "d"];
   let lettersToEarn = [];
