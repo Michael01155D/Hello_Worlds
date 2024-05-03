@@ -107,14 +107,15 @@ button {
     margin: 0;
 }
 
-#undo_button:hover {
+#output_area > button:hover {
     font-weight: bolder;
     box-shadow: none;
     transition: .8s;
 }
-#undo_button:active {
-        border: 3px solid rgb(27, 0, 150);
-        transform: translateY(2px);
+
+#output_area > button:active {
+        border: 2px solid rgb(27, 0, 150);
+        transform: translateY(1px);
         color: rgb(27, 0, 150);;
 }
 

@@ -8,6 +8,10 @@ const gameArea = document.getElementById("game_area");
 const levelInfo = document.getElementById("level_info");
 const mainLayout = [menu, instructions, outputArea, hintBox, gameArea, levelInfo]
 
+//for worlds that give some letters to the player: 
+const LETTERS = ["H", "e", "l", "l", "o", "W", "o", "r", "l", "d"];
+let lettersToEarn = [];
+
 //hide main view until start screen is finished
 mainLayout.map(component => component.style.visibility = "hidden");
 
@@ -25,8 +29,16 @@ const hardButton = document.createElement("button");
 const startButtons = [easyButton, mediumButton, hardButton];
 startButtons.map(button => startScreen.appendChild(button));
 const difficulties = ["Easy", "Medium", "Hard"];
+
 //boolean flag to allow keyboard input
 let inputEnabled = false;
+
+//button for advancing to next world
+const advanceButton = document.createElement("button");
+advanceButton.style.display = "none";
+advanceButton.textContent = "Advance To Next World";
+advanceButton.id = "advance_button";
+outputArea.appendChild(advanceButton);
 
 const preventInput = () => {
   inputEnabled = false;
@@ -55,7 +67,7 @@ undoButton.addEventListener('click', (e) => {
   }
 })
 
-
+//assign a difficulty to each start button
 for (let i = 0; i < 3; i++) {
     startButtons[i].textContent = difficulties[i];
     startButtons[i].id = startButtons[i].textContent.toLowerCase() + "_button";
@@ -69,14 +81,15 @@ let currentWorld = "this will be replaced by a world object";
 document.addEventListener("keydown", (e) => startingWorld(e))
 
 //refactor by passing world obj as arg
-const clearLevel = () => {
+const clearLevel = (activeListener) => {
   worldsCleared++
   preventInput();
   //refactor w/ world obj's event handler
-  document.removeEventListener("keydown", startingWorld);
+  document.removeEventListener("keydown", activeListener);
   setTimeout(() => {
     output.textContent = "Level Cleared! ...On to the next";
-  }, 500)
+    advanceButton.style.display = "";
+  }, 500);
 }
 
 
@@ -90,20 +103,47 @@ const startingWorld = (e) => {
     output.textContent += e.key;
   }
   if (output.textContent.trim() === "Hello World") {
-    clearLevel();
+    clearLevel(startingWorld);
+    //post-refactor, this should be done when worldsCleared == 4;
   }
 }
+
+
+const setUpFinalWorld = () => {
+  output.textContent = "";
+  advanceButton.removeEventListener("click", () => setUpFinalWorld);
+  let lettersGiven = Array.from(LETTERS);
+  //boolean to add a space after the first letter o appears in Hello World;
+  let firstO = true;
+  //randomly choose 5 letters to give to the player, the other 5 must be earned
+  for (let i = 0; i < 5; i++) {
+    let randIndex = Math.floor(Math.random() * lettersGiven.length);
+    lettersToEarn.push(lettersGiven[randIndex]);
+    lettersGiven.splice(randIndex, 1);
+  }
+//add letters given to player to output box:
+  LETTERS.forEach(letter => {
+    if (lettersGiven.includes(letter)){
+      output.textContent += letter;
+      lettersGiven.splice(lettersGiven.indexOf(letter), 1);
+    } else {
+      output.textContent += "_";
+    }
+    if (letter === "o" && firstO) {
+      output.textContent += " ";
+      firstO = false;
+    }});
+}
+
+advanceButton.addEventListener("click", () => setUpFinalWorld());
 
 //to be refactored into final world object
-const finalWorld = () => {
-  let letters = ["H", "e", "l", "l", "o", "W", "o", "r", "l", "d"];
-  let lettersToEarn = [];
-
-  for (let i = 0; i < 5; i++) {
-    let randIndex = Math.floor(Math.random() * letters.length);
-    lettersToEarn.push(letters[randIndex]);
-    letters.splice(randIndex, 1);
+const finalWorld = (e) => {
+  if (!allowInput) {
+    return;
   }
-  console.log("Letters are:", letters);
-  console.log("to earn are:", lettersToEarn);
+  //
+
 }
+
+document.addEventListener("keydown", (e) => finalWorld(e));
