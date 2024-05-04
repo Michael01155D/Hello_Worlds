@@ -111,7 +111,6 @@ const startingWorld = (e) => {
 
 const setUpFinalWorld = () => {
   output.textContent = "";
-  advanceButton.removeEventListener("click", () => setUpFinalWorld);
   let lettersGiven = Array.from(LETTERS);
   //boolean to add a space after the first letter o appears in Hello World;
   let firstO = true;
@@ -133,6 +132,10 @@ const setUpFinalWorld = () => {
       output.textContent += " ";
       firstO = false;
     }});
+    advanceButton.style.display = "none";
+    gameArea.textContent = "**TODO**: implement logic where the remaining letters must be earned"
+    gameArea.textContent += "through 'hangman' style game played in this box"
+    gameArea.style.fontSize = "1.5rem";
 }
 
 advanceButton.addEventListener("click", () => setUpFinalWorld());
