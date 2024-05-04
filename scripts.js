@@ -145,7 +145,8 @@ const finalWorld = (e) => {
   if (!allowInput) {
     return;
   }
-  //
+  //for each letter to earn, play a game of hangman! 
+  
 
 }
 
