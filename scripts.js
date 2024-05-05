@@ -68,7 +68,7 @@ const startGame = (difficulty) => {
 }
 
 undoButton.addEventListener('click', (e) => {
-  if (allowInput){
+  if (inputEnabled){
     output.textContent = output.textContent.slice(0, -1);
   }
 })
@@ -100,7 +100,7 @@ const clearLevel = (activeListener) => {
 
 
 const startingWorld = (e) => {
-  if (!allowInput) {
+  if (!inputEnabled) {
     return;
   }
   if (e.key === "Backspace"){
