@@ -1,3 +1,9 @@
+import { hangman }  from "./hangman.js";
+
+
+//temp for debugging:
+hangman('w');
+
 const menu = document.getElementById("menu");
 const instructions = document.getElementById("instructions");
 const outputArea = document.getElementById("output_area");
@@ -114,8 +120,8 @@ const setUpFinalWorld = () => {
   let lettersGiven = Array.from(LETTERS);
   //boolean to add a space after the first letter o appears in Hello World;
   let firstO = true;
-  //randomly choose 5 letters to give to the player, the other 5 must be earned
-  for (let i = 0; i < 5; i++) {
+  //randomly choose 7 letters to give to the player, the other 3 must be earned
+  for (let i = 0; i < 3; i++) {
     let randIndex = Math.floor(Math.random() * lettersGiven.length);
     lettersToEarn.push(lettersGiven[randIndex]);
     lettersGiven.splice(randIndex, 1);
@@ -136,6 +142,7 @@ const setUpFinalWorld = () => {
     gameArea.textContent = "**TODO**: implement logic where the remaining letters must be earned"
     gameArea.textContent += "through 'hangman' style game played in this box"
     gameArea.style.fontSize = "1.5rem";
+    hangman(lettersToEarn[0]);
 }
 
 advanceButton.addEventListener("click", () => setUpFinalWorld());
@@ -146,8 +153,6 @@ const finalWorld = (e) => {
     return;
   }
   //for each letter to earn, play a game of hangman! 
-  
-
 }
 
-document.addEventListener("keydown", (e) => finalWorld(e));
+//document.addEventListener("keydown", (e) => finalWorld(e));
