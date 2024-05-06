@@ -4,6 +4,7 @@ const hangmanWordDisplay = document.createElement("p");
 const currentGuess = document.createElement("p");
 const previousGuesses = document.createElement("p");
 const submitGuessButton = document.createElement("button");
+const output = document.getElementById("output");
 
 gameHeader.id = "game_header";
 hangmanWordDisplay.id = "hangman_word";
@@ -44,7 +45,7 @@ const startGame = async (letterToEarn) => {
 const generateAnswer = async (letterToEarn) => {
     const file = await fetch(`./word_files/${letterToEarn.toLowerCase()}_words.txt`)
     const txt = (await file.text()).split("\n")
-    return txt[Math.floor(Math.random() * txt.length)];
+    return txt[Math.floor(Math.random() * txt.length)].trim();
 }
 
 const setUpDOM = () => {
@@ -74,14 +75,14 @@ const guessLetter = (guess) => {
             correctGuess = true;
         }
     }
-    //CURRENT BUG: need to get proper string equality once word is found
-    console.log("after guess, current is: " + current)
-    console.log("and answer is: " + answer);
-    console.log("current === answer ?",  current === answer);
     if (current === answer) {
+        console.log('if statement was reached');
         //update output textcontent w/ earned letter
         gameWon();
         return;
+    }
+    else {
+        console.log(current + " is not the same as : " + answer);
     }
     if (!correctGuess) {
         lives--;
@@ -98,36 +99,38 @@ const gameWon = () => {
     //depending on letter to earn (ie: answer[0]), update output display in main js file to include the newly won letter. 
     let earnedLetter = answer[0];
 
-    //helper function for cases when letter earned appears more than once in Hello World
+    //helper function that accepts all possible indicies of letter earned, update correct index of output.textcontent to include earned letter. 
     const updateOutput = (indicies) => {
         for (let i = 0; i < indicies.length; i++) {
             if (output.textContent.charAt(indicies[i]) === "_") {
-                output.textContent.charAt(indicies[i]) = earnedLetter;
+                let newOutput = output.textContent.split("");
+                newOutput[indicies[i]] = earnedLetter;
+                output.textContent = newOutput.join("");
                 return;
             }
         }
     }
     switch(earnedLetter) {
         case "h":
-            output.textContent.charAt(0) = "H";
+            updateOutput([0]);
             break;
         case "e": 
-            output.textContent.charAt(1) = "e";
+            updateOutput([1]);
             break;
         case "l": 
-            updateOutput([2, 3, 9])
+            updateOutput([2, 3, 9]);
             break;
         case "o":
-            updateOutput([4, 7])
+            updateOutput([4, 7]);
             break;
         case "w":
-            output.textContent.charAt(6) = "W";
+            updateOutput([6]);
             break;
         case "r":
-            output.textContent.charAt(8) = "r";
+            updateOutput([8]);
             break;
         case "d":
-            outerput.textContent.charAt(10) = "d";
+            updateOutput([10]);
             break;
         default: break;
     }
