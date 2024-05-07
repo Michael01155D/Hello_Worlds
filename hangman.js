@@ -5,6 +5,7 @@ const currentGuess = document.createElement("p");
 const previousGuesses = document.createElement("p");
 const submitGuessButton = document.createElement("button");
 const output = document.getElementById("output");
+const instructions = document.getElementById("instructions");
 
 gameHeader.id = "game_header";
 hangmanWordDisplay.id = "hangman_word";
@@ -13,26 +14,29 @@ previousGuesses.id = "previous_guesses";
 submitGuessButton.id = "submit_guess_button";
 submitGuessButton.textContent = "Guess Word";
 
-let lives = 6;
+let lives = 7;
 let answer;
 let alreadyGuessed = "";
-let current = "______";
+let current = "_ _ _ _ _ _";
 let inputEnabled = false;
+
+//index representing user's inputted letter. used as 2nd substring arg to preserve instruction part of currentGuess.textContent 
+const SUBSTRING_INDEX = 16;
 
 document.addEventListener("keydown", (e) => {
   if (!inputEnabled) {
     return;
   }
   if ("abcdefghijklmnopqrstuvwxyz".includes(e.key.toLowerCase())) {
-    currentGuess.textContent = e.key;
+    currentGuess.textContent = currentGuess.textContent.substring(0, SUBSTRING_INDEX) + e.key.toLowerCase();
   } 
   if (e.key == "Backspace") {
-    currentGuess.textContent = "";
+    currentGuess.textContent = currentGuess.textContent.substring(0, SUBSTRING_INDEX);
   }
 })
 
 submitGuessButton.addEventListener("click", () => {
-    guessLetter(currentGuess.textContent.toLowerCase());
+    guessLetter(currentGuess.textContent.charAt(SUBSTRING_INDEX).toLowerCase());
 })
 
 const startGame = async (letterToEarn) => {
@@ -51,14 +55,18 @@ const generateAnswer = async (letterToEarn) => {
 const setUpDOM = () => {
     [gameHeader, hangmanWordDisplay, currentGuess, previousGuesses, submitGuessButton].forEach(node => gameArea.appendChild(node));
     gameHeader.textContent = "The World's Overlord is safeguarding the remaining letters. Take each away through a galactic game of hangman!";
+    let updatedCurrent = current.split("");
+    updatedCurrent[0] = answer.charAt(0);
+    current = updatedCurrent.join("");
+    hangmanWordDisplay.textContent = current;
     previousGuesses.textContent = "Guesses Remaining: " + lives +"\n";
-    currentGuess.textContent = "";
+    currentGuess.textContent = "Guess a letter: ";
 }
 
 const updateDOM = () => {
     hangmanWordDisplay.textContent = current;
-    previousGuesses.textContent = "Guesses Remaining: " + lives + "\n";
-    previousGuesses.textContent += "Letters guessed so far: " + alreadyGuessed;
+    previousGuesses.textContent = "Guesses Remaining: " + lives + "\r";
+    previousGuesses.textContent += "\nLetters guessed so far: " + alreadyGuessed;
 }
 
 const guessLetter = (guess) => {
@@ -70,19 +78,16 @@ const guessLetter = (guess) => {
     for (let i = 0; i < answer.length; i++) {
         if (answer[i] === guess) {
             let newCurrent = current.split("");
-            newCurrent[i] = guess;
+            newCurrent[i * 2] = guess; //i * 2 to account for spaces btwn underscores
             current = newCurrent.join("");
             correctGuess = true;
         }
     }
-    if (current === answer) {
-        console.log('if statement was reached');
+    if (current.replaceAll(" ", "") === answer) {
+        current = answer;
         //update output textcontent w/ earned letter
         gameWon();
         return;
-    }
-    else {
-        console.log(current + " is not the same as : " + answer);
     }
     if (!correctGuess) {
         lives--;
@@ -133,6 +138,13 @@ const gameWon = () => {
             updateOutput([10]);
             break;
         default: break;
+    }
+    //if all letters are earned
+    if (output.textContent === "Hello World") {
+        instructions.textContent = "Congratulations! You've said Hello to many Worlds! You've earned the Title, 'Intergalactic Greeter' and a metaphorical cookie.";
+        gameArea.textContent = "Come back again sometime! We bake fresh metaphorical cookies daily.";
+    } else {
+        //TODO: create a "begin next round" button in global scope, in here make it visible. add a click handler in main.js that calls hangman(letterToEarn) and makes it disappear
     }
 }
  
