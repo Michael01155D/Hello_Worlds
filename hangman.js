@@ -107,44 +107,43 @@ const gameWon = () => {
     let earnedLetter = answer[0];
 
     //helper function that accepts all possible indicies of letter earned, update correct index of output.textcontent to include earned letter. 
-    const updateOutput = (indicies) => {
+    const updateOutput = (indicies, capitalize=false) => {
         for (let i = 0; i < indicies.length; i++) {
             if (output.textContent.charAt(indicies[i]) === "_") {
                 let newOutput = output.textContent.split("");
-                newOutput[indicies[i]] = earnedLetter;
-                output.textContent = newOutput.join("");
-                return;
+                newOutput[indicies[i]] =  capitalize ? earnedLetter.toUpperCase() : earnedLetter;
+                return  newOutput.join("");
             }
         }
     }
     switch(earnedLetter) {
         case "h":
-            updateOutput([0]);
+            output.textContent = updateOutput([0], true);
             break;
         case "e": 
-            updateOutput([1]);
+            output.textContent = updateOutput([1]);
             break;
         case "l": 
-            updateOutput([2, 3, 9]);
+            output.textContent = updateOutput([2, 3, 9]);
             break;
         case "o":
-            updateOutput([4, 7]);
+            output.textContent = updateOutput([4, 7]);
             break;
         case "w":
-            updateOutput([6]);
+            output.textContent = updateOutput([6], true);
             break;
         case "r":
-            updateOutput([8]);
+            output.textContent = updateOutput([8]);
             break;
         case "d":
-            updateOutput([10]);
+            output.textContent = updateOutput([10]);
             break;
         default: break;
     }
     //if all letters are earned
     if (output.textContent === "Hello World") {
-        instructions.textContent = "Congratulations! You've said Hello to many Worlds! You've earned the Title, 'Intergalactic Greeter' and a metaphorical cookie.";
-        gameArea.textContent = "Come back again sometime! We bake fresh metaphorical cookies daily.";
+        instructions.textContent = "You've completed the game!"
+        gameArea.textContent = "Congratulations! You've said Hello to many Worlds! Please come say Hello World again sometime";
     } else {
         //TODO: create a "begin next round" button in global scope, in here make it visible. add a click handler in main.js that calls hangman(letterToEarn) and makes it disappear
     }
