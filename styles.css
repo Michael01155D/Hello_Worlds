@@ -26,6 +26,10 @@ h1 {
     font-style: italic;
 }
 
+p {
+    white-space: pre;
+}
+
 #menu {
     width: 40%;
 }
@@ -140,5 +144,14 @@ button {
 
 #game_area {
     display: grid;
-    width: 60%;
+    max-width: 80%;
+    min-width: fit-content;
+}
+
+#submit_guess_button {
+    width: 20%;
+    margin: auto;
+    margin-bottom: .5em;
+    font-size: large;
+    min-width: fit-content;
 }

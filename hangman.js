@@ -12,7 +12,7 @@ hangmanWordDisplay.id = "hangman_word";
 currentGuess.id = "current_guess";
 previousGuesses.id = "previous_guesses";
 submitGuessButton.id = "submit_guess_button";
-submitGuessButton.textContent = "Guess Word";
+submitGuessButton.textContent = "Guess Letter";
 
 let lives = 7;
 let answer;
@@ -53,25 +53,27 @@ const generateAnswer = async (letterToEarn) => {
 }
 
 const setUpDOM = () => {
-    [gameHeader, hangmanWordDisplay, currentGuess, previousGuesses, submitGuessButton].forEach(node => gameArea.appendChild(node));
+    [gameHeader, hangmanWordDisplay, previousGuesses, currentGuess, submitGuessButton].forEach(node => gameArea.appendChild(node));
     gameHeader.textContent = "The World's Overlord is safeguarding the remaining letters. Take each away through a galactic game of hangman!";
-    let updatedCurrent = current.split("");
-    updatedCurrent[0] = answer.charAt(0);
-    current = updatedCurrent.join("");
+    current = answer.split("").map(char => {
+        return char === answer.charAt(0) ? char : "_";
+    }).join(" ")
     hangmanWordDisplay.textContent = current;
-    previousGuesses.textContent = "Guesses Remaining: " + lives +"\n";
+    previousGuesses.textContent = "Guesses Remaining: " + lives +"\r\n";
+    alreadyGuessed = answer[0] + " ";
+    previousGuesses.textContent += "\nLetters guessed so far: " + alreadyGuessed;
     currentGuess.textContent = "Guess a letter: ";
 }
 
 const updateDOM = () => {
     hangmanWordDisplay.textContent = current;
-    previousGuesses.textContent = "Guesses Remaining: " + lives + "\r";
+    previousGuesses.textContent = "Guesses Remaining: " + lives +"\r\n";
     previousGuesses.textContent += "\nLetters guessed so far: " + alreadyGuessed;
 }
 
 const guessLetter = (guess) => {
     if (alreadyGuessed.includes(guess)) {
-        //alert user that letter was already guessed and do nothing;
+        //TODO: add alert user that letter was already guessed and do nothing;
         return;
     }
     let correctGuess = false;
@@ -149,9 +151,12 @@ const gameWon = () => {
 }
  
 const gameLost = () => {
-    gameArea.textContent = "Game Over! The Overlord successfully defended the letters and banished you from the world.";
+    previousGuesses.textContent = "";
+    gameHeader.textContent = "Game Over! The Overlord successfully defended the letters and banished you from the world.";
+    currentGuess.textContent = "The word was: " + answer;
     inputEnabled = false;
-    //TODO: add a replay button
+    submitGuessButton.style.display = "none";
+    //TODO: add a replay button that calls a restart() function
 }
 
 export { startGame as hangman };

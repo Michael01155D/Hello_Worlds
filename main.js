@@ -1,8 +1,9 @@
 import { hangman }  from "./hangman.js";
 
 
-//temp for debugging:
+/*temp for debugging:
 hangman('w');
+*/
 
 const menu = document.getElementById("menu");
 const instructions = document.getElementById("instructions");

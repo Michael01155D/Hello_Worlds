@@ -13,4 +13,5 @@ One major refactor will be turning the levels into objects, with the following p
 -input handler (function to act as event handler for keyboard and/or mouse)
 -hint
 -type (ex: keyboard, click, etc.)
+-usesGameArea (boolean to determine weather gameArea section is displayed on screen)
 
