@@ -85,7 +85,7 @@ let worldsCleared = 0;
 let currentWorld = "this will be replaced by a world object";
 
 //once worlds are refactored into objects, each obj will have its own listener fnctn
-document.addEventListener("keydown", (e) => startingWorld(e))
+document.addEventListener("keydown", (e) => startingWorldListner(e))
 
 //refactor by passing world obj as arg
 const clearLevel = (activeListener) => {
@@ -100,7 +100,7 @@ const clearLevel = (activeListener) => {
 }
 
 
-const startingWorld = (e) => {
+const startingWorldListner = (e) => {
   if (!inputEnabled) {
     return;
   }
@@ -110,8 +110,7 @@ const startingWorld = (e) => {
     output.textContent += e.key;
   }
   if (output.textContent.trim() === "Hello World") {
-    clearLevel(startingWorld);
-    //post-refactor, this should be done when worldsCleared == 4;
+    clearLevel(startingWorldListner);
   }
 }
 
@@ -139,21 +138,27 @@ const setUpFinalWorld = () => {
       output.textContent += " ";
       firstO = false;
     }});
-    advanceButton.style.display = "none";
-    gameArea.textContent = "**TODO**: implement logic where the remaining letters must be earned"
-    gameArea.textContent += "through 'hangman' style game played in this box"
+    //remove advance button from dom and remove listener from it
+    updateAdvanceButton(setUpFinalWorld);
     gameArea.style.fontSize = "1.5rem";
-    hangman(lettersToEarn[0]);
+    hangman(lettersToEarn);
+    /*WIP: completing hangman game should make advance button appear (unless all letters are earned)
+            in here it should get new event listener to continue playing final world until all letters are earned
+    */
 }
 
-advanceButton.addEventListener("click", () => setUpFinalWorld());
+advanceButton.addEventListener("click", setUpFinalWorld);
 
-//to be refactored into final world object
-const finalWorld = (e) => {
-  if (!allowInput) {
-    return;
+
+//function to add/remove advance button from DOM and add/remove event listener to it 
+export const updateAdvanceButton = (listener, label="Advance To Next World") => {
+  if (advanceButton.style.display === "none") {
+    advanceButton.style.display = "inline-block";
+    advanceButton.addEventListener("click", listener);
+    advanceButton.textContent = label;
+  } else {
+    advanceButton.style.display = "none";
+    advanceButton.removeEventListener("click", listener);
   }
-  //for each letter to earn, play a game of hangman! 
 }
 
-//document.addEventListener("keydown", (e) => finalWorld(e));

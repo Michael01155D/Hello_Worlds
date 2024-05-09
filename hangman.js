@@ -1,3 +1,5 @@
+import { updateAdvanceButton } from "./main.js";
+
 const gameArea = document.getElementById("game_area");
 const gameHeader = document.createElement("header");
 const hangmanWordDisplay = document.createElement("p");
@@ -14,11 +16,15 @@ previousGuesses.id = "previous_guesses";
 submitGuessButton.id = "submit_guess_button";
 submitGuessButton.textContent = "Guess Letter";
 
-let lives = 7;
+const STARTING_LIVES = 7;
+let lives = STARTING_LIVES;
 let answer;
 let alreadyGuessed = "";
-let current = "_ _ _ _ _ _";
+//current represents the word as its letters are being guessed
+let current;
 let inputEnabled = false;
+let lettersToEarn; //passed through main in startGame.
+let currentLetter = 0; //index of letter to earn
 
 //index representing user's inputted letter. used as 2nd substring arg to preserve instruction part of currentGuess.textContent 
 const SUBSTRING_INDEX = 16;
@@ -39,8 +45,10 @@ submitGuessButton.addEventListener("click", () => {
     guessLetter(currentGuess.textContent.charAt(SUBSTRING_INDEX).toLowerCase());
 })
 
-const startGame = async (letterToEarn) => {
-    answer = await generateAnswer(letterToEarn);
+const startGame = async (letters) => {
+    lettersToEarn = letters;
+    answer = await generateAnswer(lettersToEarn[currentLetter]);
+    currentLetter++; 
     gameArea.textContent = "";
     setUpDOM();
     inputEnabled = true;
@@ -54,13 +62,13 @@ const generateAnswer = async (letterToEarn) => {
 
 const setUpDOM = () => {
     [gameHeader, hangmanWordDisplay, previousGuesses, currentGuess, submitGuessButton].forEach(node => gameArea.appendChild(node));
-    gameHeader.textContent = "The World's Overlord is safeguarding the remaining letters. Take each away through a galactic game of hangman!";
+    gameHeader.textContent = "The World's Overlord is safeguarding the remaining letters. Take each letter through a galactic game of hangman!";
     current = answer.split("").map(char => {
         return char === answer.charAt(0) ? char : "_";
     }).join(" ")
     hangmanWordDisplay.textContent = current;
     previousGuesses.textContent = "Guesses Remaining: " + lives +"\r\n";
-    alreadyGuessed = answer[0] + " ";
+    alreadyGuessed = answer[0];
     previousGuesses.textContent += "\nLetters guessed so far: " + alreadyGuessed;
     currentGuess.textContent = "Guess a letter: ";
 }
@@ -145,7 +153,8 @@ const gameWon = () => {
         instructions.textContent = "You've completed the game!"
         gameArea.textContent = "Congratulations! You've said Hello to many Worlds! Please come say Hello World again sometime";
     } else {
-        //TODO: create a "begin next round" button in global scope, in here make it visible. add a click handler in main.js that calls hangman(letterToEarn) and makes it disappear
+        //get rid of round's text and make button appear to begin game for next letter
+        endRound();
     }
 }
  
@@ -157,5 +166,24 @@ const gameLost = () => {
     submitGuessButton.style.display = "none";
     //TODO: add a replay button that calls a restart() function
 }
+
+const endRound = () => {
+    inputEnabled = false;
+    hangmanWordDisplay.textContent = "Well done! The word was: " +  answer + "\n\nClick the advance button above to begin the battle for the next letter."
+    previousGuesses.textContent = "";
+    currentGuess.textContent = "";
+    submitGuessButton.style.visibility = "hidden";
+    //make advance button appear and give new handler
+    updateAdvanceButton(getNextLetter, "Advance to next letter")
+}
+
+const getNextLetter = () => {
+    submitGuessButton.style.visibility = "visible";
+    lives = STARTING_LIVES;
+    startGame(lettersToEarn);
+    //call again to make button disappear and remove handler
+    updateAdvanceButton(getNextLetter);
+}
+
 
 export { startGame as hangman };
