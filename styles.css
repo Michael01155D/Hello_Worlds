@@ -26,10 +26,6 @@ h1 {
     font-style: italic;
 }
 
-p {
-    white-space: pre;
-}
-
 #menu {
     width: 40%;
 }
@@ -71,7 +67,7 @@ p {
     flex: 0.5;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 525px) {
     #hint_box {
         margin-top: 2em;
     }
@@ -134,7 +130,6 @@ button {
 }
 
 #start_screen {
-    white-space: pre;
     font-family: var(--main-font);
     border: none;
     font-size: larger;
@@ -144,8 +139,10 @@ button {
 
 #game_area {
     display: grid;
-    max-width: 80%;
-    min-width: fit-content;
+}
+
+#game_area > * {
+    max-width: 60vw;
 }
 
 #submit_guess_button {
