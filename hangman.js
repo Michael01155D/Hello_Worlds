@@ -39,6 +39,9 @@ document.addEventListener("keydown", (e) => {
   if (e.key == "Backspace") {
     currentGuess.textContent = currentGuess.textContent.substring(0, SUBSTRING_INDEX);
   }
+  if (e.key == "Enter") {
+    guessLetter(currentGuess.textContent.charAt(SUBSTRING_INDEX).toLowerCase())
+  }
 })
 
 submitGuessButton.addEventListener("click", () => {
@@ -173,7 +176,7 @@ const endRound = () => {
     previousGuesses.textContent = "";
     currentGuess.textContent = "";
     submitGuessButton.style.visibility = "hidden";
-    //make advance button appear and give new handler
+    //makes advance button appear and give new handler
     updateAdvanceButton(getNextLetter, "Advance to next letter")
 }
 
@@ -181,7 +184,7 @@ const getNextLetter = () => {
     submitGuessButton.style.visibility = "visible";
     lives = STARTING_LIVES;
     startGame(lettersToEarn);
-    //call again to make button disappear and remove handler
+    //called again to make button disappear and remove handler  
     updateAdvanceButton(getNextLetter);
 }
 
