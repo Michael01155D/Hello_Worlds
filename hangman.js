@@ -167,14 +167,14 @@ const gameLost = () => {
     currentGuess.textContent = "The word was: " + answer;
     inputEnabled = false;
     submitGuessButton.style.display = "none";
-    //TODO: add a replay button that calls a restart() function
+    //TODO: add a replay button that calls a restart() functiont
 }
 
 const endRound = () => {
     inputEnabled = false;
-    hangmanWordDisplay.textContent = "Well done! The word was: " +  answer + "\n\nClick the advance button above to begin the battle for the next letter."
-    previousGuesses.textContent = "";
-    currentGuess.textContent = "";
+    hangmanWordDisplay.textContent = "Well done! The word was: " +  answer;
+    previousGuesses.textContent = "You've won the letter " + answer[0];
+    currentGuess.textContent = "Click the advance button above to battle for the next letter.";
     submitGuessButton.style.visibility = "hidden";
     //makes advance button appear and give new handler
     updateAdvanceButton(getNextLetter, "Advance to next letter")

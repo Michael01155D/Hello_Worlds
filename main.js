@@ -140,7 +140,6 @@ const setUpFinalWorld = () => {
     }});
     //remove advance button from dom and remove listener from it
     updateAdvanceButton(setUpFinalWorld);
-    gameArea.style.fontSize = "1.5rem";
     hangman(lettersToEarn);
     /*WIP: completing hangman game should make advance button appear (unless all letters are earned)
             in here it should get new event listener to continue playing final world until all letters are earned
