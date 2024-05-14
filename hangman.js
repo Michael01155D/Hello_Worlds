@@ -164,7 +164,7 @@ const gameLost = () => {
     currentGuess.textContent = "The word was: " + answer;
     inputEnabled = false;
     submitGuessButton.style.display = "none";
-    //TODO: add a replay button that calls a restart() function
+    //TODO: add a replay button that calls a restart() functiont
 }
 
 const endRound = () => {
